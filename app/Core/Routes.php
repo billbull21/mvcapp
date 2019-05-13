@@ -1,9 +1,9 @@
 <?php
 
-class Route{
+class Routes{
 
     //defaults
-    protected $controller   =   'HomeController';
+    protected $controller   =   'Home';
     protected $method       =   'index';
     protected $params        =   [];
 
@@ -13,14 +13,18 @@ class Route{
             $url = explode('/', filter_var(trim(rtrim($_GET['url'], '/')), FILTER_SANITIZE_URL));
             
             //manipulating a url
-            $url[0] = ucfirst(strtolower($url[0])) . 'Controller';
+            if(empty($url[0])){
+                $url[0] = ucfirst(strtolower( $this->controller)) . 'Controller';
+            }else {
+                $url[0] = ucfirst(strtolower($url[0])) . 'Controller';
+            }
             
             //look for the controller
             if ( file_exists('app/Controllers/' . $url[0] . '.php') ) {
                 $this->controller = $url[0];
                 //die('sini');
             } else {
-                die("404");
+                die('404');
             }
             
             require_once 'app/Controllers/'.$this->controller. '.php';
@@ -38,12 +42,15 @@ class Route{
             //defined a paramater
             //menghapus nilai sebelumnya
             unset($url[0], $url[1]);
-            if ( !isset( $url ) ) {
-                die('the method need a parameter!');
+            if ( $url == null ) {
+                $this->params = [''];
+            }else{
+                $this->params = $url;
             }
-            $this->params = $url;
             call_user_func_array([$this->controller, $this->method], $this->params);
-            
+            // $data = [$this->controller, $this->method];
+            // var_dump( $data[1] );
+            // die();            
         }
     }
 }

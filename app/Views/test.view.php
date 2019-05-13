@@ -1,0 +1,1 @@
+Halo, ini halaman test milik <?= $data['nama']; ?> dan umur <?= $data['umur']; ?>

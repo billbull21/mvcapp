@@ -1,18 +1,16 @@
 <?php
 
 class HomeController extends Controller{
-    // public function __construct()
-    // {
-    //     echo "u are home";
-    // }
 
     public function index()
     {
-        echo "mvcapp see github for the documentation!";
+        return $this->view('home');
     }
 
-    public function test()
+    public function test($umur)
     {
-        echo "testtt ";
+        $this->model('User');
+        $this->view('test', [ 'nama' =>  User::$name, 'umur' => $umur]);
     }
+
 }
